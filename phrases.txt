@@ -1,0 +1,20 @@
+hello
+good morning
+good afternoon
+good evening
+good night
+please
+thank you
+excuse me
+sorry
+i don't understand
+can you repeat?
+more slowly, please
+where is ...?
+how much is it?
+do you have ...?
+i want ...
+i need ...
+i'm just looking
+is it possible?
+can i ...?
