@@ -18,7 +18,7 @@ Start small, keep decks practical, and optimize for real-world communication.
 
 ## Current Spanish starter decks
 
-- `spanish/nouns_10.csv`
-- `spanish/verbs_10.csv`
-- `spanish/adjectives_10.csv`
+- `spanish/nouns.csv`
+- `spanish/verbs.csv`
+- `spanish/adjectives.csv`
 - `spanish/useful_phrases.csv`
