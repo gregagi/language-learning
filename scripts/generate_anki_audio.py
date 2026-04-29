@@ -3,9 +3,7 @@
 
 Examples:
   uv run --with edge-tts python scripts/generate_anki_audio.py \
-    --csv spanish/verbs.csv \
-    --audio-dir spanish/audio \
-    --voice es-ES-ElviraNeural
+    --preset spanish-verbs
 
   uv run --with edge-tts python scripts/generate_anki_audio.py \
     --csv french/verbs.csv \
@@ -19,23 +17,27 @@ from __future__ import annotations
 import argparse
 import asyncio
 import csv
+import json
 import re
+import unicodedata
 from pathlib import Path
 
 import edge_tts
 
+DEFAULT_CONFIG = "anki-audio-presets.json"
 SOUND_RE = re.compile(r"\s*\[sound:[^\]]+\]\s*$")
 PARENS_RE = re.compile(r"\s*\(.*\)")
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--csv", default="spanish/verbs.csv", help="CSV file to update")
-    parser.add_argument("--audio-dir", default="spanish/audio", help="Directory for generated mp3 files")
-    parser.add_argument("--voice", default="es-ES-ElviraNeural", help="edge-tts voice to use")
+    parser.add_argument("--preset", help="Preset name from the config file")
+    parser.add_argument("--config", default=DEFAULT_CONFIG, help=f"Preset config path (default: {DEFAULT_CONFIG})")
+    parser.add_argument("--csv", help="CSV file to update")
+    parser.add_argument("--audio-dir", help="Directory for generated mp3 files")
+    parser.add_argument("--voice", help="edge-tts voice to use")
     parser.add_argument(
         "--text-column",
-        default="Back",
         help="Header name of the column that contains the foreign-language text to speak",
     )
     parser.add_argument(
@@ -51,6 +53,26 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
+def load_preset(root: Path, config_path: str, preset_name: str | None) -> dict:
+    if not preset_name:
+        return {}
+    config_file = root / config_path
+    data = json.loads(config_file.read_text(encoding="utf-8"))
+    presets = data.get("presets", {})
+    if preset_name not in presets:
+        known = ", ".join(sorted(presets)) or "<none>"
+        raise SystemExit(f"Preset {preset_name!r} not found in {config_file}. Known presets: {known}")
+    return presets[preset_name]
+
+
+def resolve_setting(cli_value, preset_value, default_value=None):
+    if cli_value is not None:
+        return cli_value
+    if preset_value is not None:
+        return preset_value
+    return default_value
+
+
 def normalize_text(text: str) -> str:
     return SOUND_RE.sub("", text).strip()
 
@@ -59,11 +81,17 @@ def extract_spoken_text(text: str, keep_parenthetical: bool) -> str:
     clean = normalize_text(text)
     if not keep_parenthetical:
         clean = PARENS_RE.sub("", clean).strip()
-    return clean.split(",", 1)[0].strip()
+    return clean.strip()
+
+
+def ascii_slug(text: str) -> str:
+    normalized = unicodedata.normalize("NFKD", text)
+    ascii_only = normalized.encode("ascii", "ignore").decode("ascii")
+    return re.sub(r"[^a-z0-9]+", "-", ascii_only.lower()).strip("-")
 
 
 def target_filename(spoken_text: str) -> str:
-    slug = re.sub(r"[^\w]+", "-", spoken_text.lower(), flags=re.UNICODE).strip("-")
+    slug = ascii_slug(spoken_text)
     if not slug:
         raise ValueError(f"Could not build filename for text: {spoken_text!r}")
     return f"{slug}.mp3"
@@ -88,8 +116,16 @@ def save_rows(csv_path: Path, rows: list[list[str]]) -> None:
 async def main() -> None:
     args = parse_args()
     root = Path.cwd()
-    csv_path = root / args.csv
-    audio_dir = root / args.audio_dir
+    preset = load_preset(root, args.config, args.preset)
+
+    csv_value = resolve_setting(args.csv, preset.get("csv"), "spanish/verbs.csv")
+    audio_dir_value = resolve_setting(args.audio_dir, preset.get("audio_dir"), "spanish/audio")
+    voice = resolve_setting(args.voice, preset.get("voice"), "es-ES-ElviraNeural")
+    text_column = resolve_setting(args.text_column, preset.get("text_column"), "Back")
+    keep_parenthetical = args.keep_parenthetical or bool(preset.get("keep_parenthetical", False))
+
+    csv_path = root / csv_value
+    audio_dir = root / audio_dir_value
     audio_dir.mkdir(parents=True, exist_ok=True)
 
     rows = load_rows(csv_path)
@@ -97,10 +133,10 @@ async def main() -> None:
         raise SystemExit(f"CSV is empty: {csv_path}")
 
     header, *data_rows = rows
-    if args.text_column not in header:
-        raise SystemExit(f"Column {args.text_column!r} not found in {csv_path}: {header}")
+    if text_column not in header:
+        raise SystemExit(f"Column {text_column!r} not found in {csv_path}: {header}")
 
-    text_idx = header.index(args.text_column)
+    text_idx = header.index(text_column)
     generated: list[str] = []
     updated_rows = [header]
 
@@ -111,7 +147,7 @@ async def main() -> None:
 
         cell = row[text_idx]
         clean_cell = normalize_text(cell)
-        spoken_text = extract_spoken_text(clean_cell, args.keep_parenthetical)
+        spoken_text = extract_spoken_text(clean_cell, keep_parenthetical)
         if not spoken_text:
             updated_rows.append(row)
             continue
@@ -120,7 +156,7 @@ async def main() -> None:
         out_path = audio_dir / filename
 
         if args.force or not out_path.exists():
-            await generate_file(spoken_text, args.voice, out_path)
+            await generate_file(spoken_text, voice, out_path)
             generated.append(str(out_path.relative_to(root)))
 
         row = list(row)

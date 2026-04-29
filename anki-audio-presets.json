@@ -1,0 +1,28 @@
+{
+  "presets": {
+    "spanish-verbs": {
+      "csv": "spanish/verbs.csv",
+      "audio_dir": "spanish/audio",
+      "voice": "es-ES-ElviraNeural",
+      "text_column": "Back"
+    },
+    "spanish-nouns": {
+      "csv": "spanish/nouns.csv",
+      "audio_dir": "spanish/audio",
+      "voice": "es-ES-ElviraNeural",
+      "text_column": "Back"
+    },
+    "spanish-adjectives": {
+      "csv": "spanish/adjectives.csv",
+      "audio_dir": "spanish/audio",
+      "voice": "es-ES-ElviraNeural",
+      "text_column": "Back"
+    },
+    "spanish-useful-phrases": {
+      "csv": "spanish/useful_phrases.csv",
+      "audio_dir": "spanish/audio",
+      "voice": "es-ES-ElviraNeural",
+      "text_column": "Back"
+    }
+  }
+}

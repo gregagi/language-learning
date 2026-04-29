@@ -1,11 +1,11 @@
 Front,Back
-"expensive","caro / cara"
-"cheap","barato / barata"
-"good","bueno / buena"
-"bad","malo / mala"
-"big","grande"
-"small","pequeño / pequeña"
-"hot","caliente"
-"cold","frío / fría"
-"open","abierto / abierta"
-"closed","cerrado / cerrada"
+expensive,caro / cara [sound:caro-cara.mp3]
+cheap,barato / barata [sound:barato-barata.mp3]
+good,bueno / buena [sound:bueno-buena.mp3]
+bad,malo / mala [sound:malo-mala.mp3]
+big,grande [sound:grande.mp3]
+small,pequeño / pequeña [sound:pequeno-pequena.mp3]
+hot,caliente [sound:caliente.mp3]
+cold,frío / fría [sound:frio-fria.mp3]
+open,abierto / abierta [sound:abierto-abierta.mp3]
+closed,cerrado / cerrada [sound:cerrado-cerrada.mp3]

@@ -7,7 +7,15 @@ description: Generate and maintain pronunciation audio for Anki CSV decks in thi
 
 Use the repo script to generate audio and update a deck CSV in one pass.
 
-## Default pattern
+## Preferred pattern
+
+Use presets when they exist:
+
+```bash
+uv run --with edge-tts python scripts/generate_anki_audio.py --preset <preset-name>
+```
+
+Or pass explicit arguments:
 
 ```bash
 uv run --with edge-tts python scripts/generate_anki_audio.py \
@@ -28,20 +36,13 @@ uv run --with edge-tts python scripts/generate_anki_audio.py \
 Spanish verbs:
 
 ```bash
-uv run --with edge-tts python scripts/generate_anki_audio.py \
-  --csv spanish/verbs.csv \
-  --audio-dir spanish/audio \
-  --voice es-ES-ElviraNeural
+uv run --with edge-tts python scripts/generate_anki_audio.py --preset spanish-verbs
 ```
 
 Regenerate everything from scratch:
 
 ```bash
-uv run --with edge-tts python scripts/generate_anki_audio.py \
-  --csv spanish/verbs.csv \
-  --audio-dir spanish/audio \
-  --voice es-ES-ElviraNeural \
-  --force
+uv run --with edge-tts python scripts/generate_anki_audio.py --preset spanish-verbs --force
 ```
 
 Use a different column or language:
@@ -58,5 +59,7 @@ uv run --with edge-tts python scripts/generate_anki_audio.py \
 
 - Keep repo audio files under `<language>/audio/`.
 - In the CSV, use only the bare filename in the sound tag, not the repo path.
+- Presets live in `anki-audio-presets.json`.
 - By default, the script strips trailing sound tags and parenthetical notes before speaking.
+- Filenames are normalized to ASCII slugs for portability.
 - Use `--keep-parenthetical` if the full cell text should be spoken.

@@ -1,20 +1,20 @@
 Front,Back
-"Hello","Hola"
-"Good morning","Buenos días"
-"Good afternoon","Buenas tardes"
-"Good evening / Good night","Buenas noches"
-"Please","Por favor"
-"Thank you","Gracias"
-"Excuse me / Sorry","Perdón"
-"I don't understand","No entiendo"
-"Can you repeat?","¿Puede repetir?"
-"More slowly, please","Más despacio, por favor"
-"I want","Quiero"
-"I need","Necesito"
-"Where is ...?","¿Dónde está ...?"
-"How much is it?","¿Cuánto cuesta?"
-"Do you have ...?","¿Tiene ...?"
-"I'm just looking","Solo estoy mirando"
-"Is it possible?","¿Es posible?"
-"I have","Tengo"
-"Can I ...?","¿Puedo ...?"
+Hello,Hola [sound:hola.mp3]
+Good morning,Buenos días [sound:buenos-dias.mp3]
+Good afternoon,Buenas tardes [sound:buenas-tardes.mp3]
+Good evening / Good night,Buenas noches [sound:buenas-noches.mp3]
+Please,Por favor [sound:por-favor.mp3]
+Thank you,Gracias [sound:gracias.mp3]
+Excuse me / Sorry,Perdón [sound:perdon.mp3]
+I don't understand,No entiendo [sound:no-entiendo.mp3]
+Can you repeat?,¿Puede repetir? [sound:puede-repetir.mp3]
+"More slowly, please","Más despacio, por favor [sound:mas-despacio-por-favor.mp3]"
+I want,Quiero [sound:quiero.mp3]
+I need,Necesito [sound:necesito.mp3]
+Where is ...?,¿Dónde está ...? [sound:donde-esta.mp3]
+How much is it?,¿Cuánto cuesta? [sound:cuanto-cuesta.mp3]
+Do you have ...?,¿Tiene ...? [sound:tiene.mp3]
+I'm just looking,Solo estoy mirando [sound:solo-estoy-mirando.mp3]
+Is it possible?,¿Es posible? [sound:es-posible.mp3]
+I have,Tengo [sound:tengo.mp3]
+Can I ...?,¿Puedo ...? [sound:puedo.mp3]

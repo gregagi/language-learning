@@ -30,23 +30,23 @@ This repo now includes a reusable pronunciation workflow for Anki across languag
 - audio files live in `<language>/audio/`
 - deck CSVs store inline Anki sound tags like `[sound:querer.mp3]`
 - the generation script is `scripts/generate_anki_audio.py`
+- preset defaults live in `anki-audio-presets.json`
 - the repo-local skill is `skills/anki-audio/SKILL.md`
 
 Spanish verbs example:
 
 ```bash
-uv run --with edge-tts python scripts/generate_anki_audio.py \
-  --csv spanish/verbs.csv \
-  --audio-dir spanish/audio \
-  --voice es-ES-ElviraNeural
+uv run --with edge-tts python scripts/generate_anki_audio.py --preset spanish-verbs
 ```
+
+Other current presets:
+
+- `spanish-nouns`
+- `spanish-adjectives`
+- `spanish-useful-phrases`
 
 To regenerate from scratch:
 
 ```bash
-uv run --with edge-tts python scripts/generate_anki_audio.py \
-  --csv spanish/verbs.csv \
-  --audio-dir spanish/audio \
-  --voice es-ES-ElviraNeural \
-  --force
+uv run --with edge-tts python scripts/generate_anki_audio.py --preset spanish-verbs --force
 ```
