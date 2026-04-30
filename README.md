@@ -58,9 +58,11 @@ This repo also includes a reusable image-based deck workflow for any language:
 
 - image files live in `<language>/images/`
 - image-based deck CSVs reference bare filenames with HTML like `<img src="el-cafe.jpg">`
-- the generation script is `scripts/generate_anki_image_deck.py`
+- the helper script is `scripts/generate_anki_image_deck.py`
 - preset defaults live in `anki-image-presets.json`
 - the repo-local skill is `skills/anki-images/SKILL.md`
+
+Important: the script only scaffolds the deck CSV plus a prompt manifest. The actual image creation step happens separately via an image-generation tool/model or manual sourcing.
 
 Spanish nouns example:
 
