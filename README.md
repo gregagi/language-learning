@@ -29,7 +29,6 @@ Start small, keep decks practical, and optimize for real-world communication.
 This repo now includes a reusable pronunciation workflow for Anki across languages:
 
 - audio files live in `<language>/audio/`
-- image files for image-based decks can live in `<language>/images/` and be referenced from CSV with HTML like `<img src="el-cafe-card.jpg">`
 - deck CSVs store inline Anki sound tags like `[sound:querer.mp3]`
 - the generation script is `scripts/generate_anki_audio.py`
 - preset defaults live in `anki-audio-presets.json`
@@ -52,3 +51,26 @@ To regenerate from scratch:
 ```bash
 uv run --with edge-tts python scripts/generate_anki_audio.py --preset spanish-verbs --force
 ```
+
+## Anki image workflow
+
+This repo also includes a reusable image-based deck workflow for any language:
+
+- image files live in `<language>/images/`
+- image-based deck CSVs reference bare filenames with HTML like `<img src="el-cafe.jpg">`
+- the generation script is `scripts/generate_anki_image_deck.py`
+- preset defaults live in `anki-image-presets.json`
+- the repo-local skill is `skills/anki-images/SKILL.md`
+
+Spanish nouns example:
+
+```bash
+uv run python scripts/generate_anki_image_deck.py --preset spanish-nouns-images --overwrite-output
+```
+
+The script writes:
+
+- an image-based deck CSV such as `spanish/nouns_images.csv`
+- an editable prompt manifest such as `spanish/nouns_image_prompts.csv`
+
+Use the prompt manifest as a starting point, then review and tighten prompts for ambiguous concepts before generating images at scale.

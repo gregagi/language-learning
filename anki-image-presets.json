@@ -1,0 +1,13 @@
+{
+  "presets": {
+    "spanish-nouns-images": {
+      "source_csv": "spanish/nouns.csv",
+      "output_csv": "spanish/nouns_images.csv",
+      "image_dir": "spanish/images",
+      "prompt_output": "spanish/nouns_image_prompts.csv",
+      "front_column": "Front",
+      "back_column": "Back",
+      "prompt_template": "A realistic photo clearly showing {concept}. No visible words, letters, signs, logos, labels, menus, or watermarks anywhere in the image. Use a clean composition that makes the concept instantly recognizable for a language learner."
+    }
+  }
+}
