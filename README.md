@@ -52,6 +52,44 @@ To regenerate from scratch:
 uv run --with edge-tts python scripts/generate_anki_audio.py --preset spanish-verbs --force
 ```
 
+## Local Anki sync workflow
+
+You can sync the repo CSVs and media into Anki Desktop without manually dragging files into `collection.media` or re-importing each CSV.
+
+Requirements:
+
+1. Open Anki Desktop on the computer that owns the collection.
+2. Install the AnkiConnect add-on (`2055492159`).
+3. Run a dry-run first:
+
+```bash
+uv run python scripts/sync_to_anki.py --language spanish --dry-run
+```
+
+Then run the real sync:
+
+```bash
+uv run python scripts/sync_to_anki.py --language spanish
+```
+
+Current Spanish deck mapping:
+
+- `spanish/adjectives.csv` → `Spanish Adjectives`
+- `spanish/nouns_images.csv` → `Spanish Image Nouns`
+- `spanish/nouns.csv` → `Spanish Nouns`
+- `spanish/useful_phrases.csv` → `Spanish Phrases`
+- `spanish/verbs.csv` → `Spanish Verbs`
+
+By default, media is uploaded through AnkiConnect. If you prefer direct file copy, pass your local media directory:
+
+```bash
+uv run python scripts/sync_to_anki.py \
+  --language spanish \
+  --copy-media-dir "/Users/rasul/Library/Application Support/Anki2/User 1/collection.media"
+```
+
+The script creates missing decks, uploads/copies referenced `[sound:...]` and `<img src="...">` files, adds new notes, updates existing notes matched by their `Front` field inside each deck, and triggers Anki sync unless `--no-sync` is passed.
+
 ## Anki image workflow
 
 This repo also includes a reusable image-based deck workflow for any language:
