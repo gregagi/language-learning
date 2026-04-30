@@ -22,12 +22,14 @@ Start small, keep decks practical, and optimize for real-world communication.
 - `spanish/verbs.csv`
 - `spanish/adjectives.csv`
 - `spanish/useful_phrases.csv`
+- `spanish/nouns_images.csv` - experimental image -> Spanish noun deck
 
 ## Anki audio workflow
 
 This repo now includes a reusable pronunciation workflow for Anki across languages:
 
 - audio files live in `<language>/audio/`
+- image files for image-based decks can live in `<language>/images/` and be referenced from CSV with HTML like `<img src="el-cafe-card.jpg">`
 - deck CSVs store inline Anki sound tags like `[sound:querer.mp3]`
 - the generation script is `scripts/generate_anki_audio.py`
 - preset defaults live in `anki-audio-presets.json`
