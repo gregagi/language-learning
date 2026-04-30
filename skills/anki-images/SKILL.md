@@ -9,6 +9,8 @@ Use this as a reusable workflow for how the agent should create image-based deck
 
 Important: the script does not generate images by itself. It only prepares the deck CSV and a prompt manifest. The actual images should be created or sourced separately, typically by the agent using an image-generation tool/model or by manually finding suitable images.
 
+Current tested path in this repo: use the agent's `image_generate` tool. In this environment, the example images for this workflow were generated with `google/gemini-3-pro-image-preview`. Treat that as an implementation detail, not a requirement of the workflow: the deck format and prompt guidance should still work with other configured image providers/models.
+
 ## Preferred pattern
 
 Use presets when they exist:
@@ -61,6 +63,7 @@ Examples:
 1. Run the script to generate the image deck CSV and prompt manifest.
 2. Review the prompt manifest and adjust rows that are too vague or map to the wrong sense.
 3. Use the agent's image-generation tool or a manual image-sourcing step to create/find images using the manifest prompts and filenames.
+   - Current tested example: `image_generate` routed to `google/gemini-3-pro-image-preview` in this environment.
 4. Save the final images into `<language>/images/` using the manifest filenames.
 5. Import the CSV into Anki and copy image files into Anki media alongside audio.
 6. Inspect a few sample cards for hidden text, wrong senses, and concept quality before scaling.
