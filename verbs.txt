@@ -19,3 +19,4 @@ pay
 help
 wait
 try
+pet
