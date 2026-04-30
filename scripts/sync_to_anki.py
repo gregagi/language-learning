@@ -47,6 +47,7 @@ DEFAULT_DECKS = {
 
 SOUND_RE = re.compile(r"\[sound:([^\]]+)\]")
 IMG_RE = re.compile(r"<img\s+[^>]*src=[\"']([^\"']+)[\"'][^>]*>", re.IGNORECASE)
+TRAILING_PARENS_RE = re.compile(r"\s+\([^)]*\)\s*$")
 
 
 @dataclass(frozen=True)
@@ -64,6 +65,7 @@ class SyncStats:
     notes_added: int = 0
     notes_updated: int = 0
     notes_unchanged: int = 0
+    notes_deleted: int = 0
 
 
 def parse_args() -> argparse.Namespace:
@@ -175,18 +177,76 @@ def note_fields(row: dict[str, str]) -> dict[str, str]:
     return {"Front": row.get("Front", ""), "Back": row.get("Back", "")}
 
 
-def load_existing_notes(anki_url: str, deck_name: str) -> dict[str, dict[str, Any]]:
+def load_existing_notes(anki_url: str, deck_name: str) -> list[dict[str, Any]]:
     note_ids = invoke(anki_url, "findNotes", {"query": f'deck:"{deck_name}"'})
     if not note_ids:
-        return {}
-    notes = invoke(anki_url, "notesInfo", {"notes": note_ids})
+        return []
+    return invoke(anki_url, "notesInfo", {"notes": note_ids})
+
+
+def front_value(note: dict[str, Any]) -> str | None:
+    return note.get("fields", {}).get("Front", {}).get("value")
+
+
+def back_value(note: dict[str, Any]) -> str | None:
+    return note.get("fields", {}).get("Back", {}).get("value")
+
+
+def notes_by_front(notes: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
     existing: dict[str, dict[str, Any]] = {}
     for note in notes:
-        fields = note.get("fields", {})
-        front = fields.get("Front", {}).get("value")
+        front = front_value(note)
         if front is not None and front not in existing:
             existing[front] = note
     return existing
+
+
+def strip_trailing_parenthetical(text: str) -> str:
+    return TRAILING_PARENS_RE.sub("", text).strip()
+
+
+def cleanup_existing_notes(
+    *,
+    anki_url: str,
+    notes: list[dict[str, Any]],
+    desired_fronts: set[str],
+) -> tuple[int, int]:
+    """Remove stale import artifacts before upserting current CSV rows.
+
+    This handles two historical manual-import problems:
+    - a literal header card with Front/Back as note content
+    - old notes whose Front had an extra trailing parenthetical, e.g.
+      "to want (querer)", after the CSV was later changed to "to want"
+    """
+    existing = notes_by_front(notes)
+    deleted = 0
+    updated = 0
+
+    for note in notes:
+        note_id = note["noteId"]
+        front = front_value(note)
+        back = back_value(note)
+        if front is None:
+            continue
+
+        if front == "Front" and back == "Back":
+            invoke(anki_url, "deleteNotes", {"notes": [note_id]})
+            deleted += 1
+            continue
+
+        cleaned_front = strip_trailing_parenthetical(front)
+        if cleaned_front == front or cleaned_front not in desired_fronts:
+            continue
+
+        if cleaned_front in existing:
+            invoke(anki_url, "deleteNotes", {"notes": [note_id]})
+            deleted += 1
+        else:
+            invoke(anki_url, "updateNoteFields", {"note": {"id": note_id, "fields": {"Front": cleaned_front}}})
+            existing[cleaned_front] = note
+            updated += 1
+
+    return deleted, updated
 
 
 def fields_changed(existing_note: dict[str, Any], desired: dict[str, str]) -> bool:
@@ -235,7 +295,14 @@ def sync_deck(
         return stats
 
     invoke(anki_url, "createDeck", {"deck": spec.deck_name})
-    existing = load_existing_notes(anki_url, spec.deck_name)
+    desired_fronts = {note_fields(row)["Front"] for row in rows}
+    existing_notes = load_existing_notes(anki_url, spec.deck_name)
+    deleted, normalized = cleanup_existing_notes(anki_url=anki_url, notes=existing_notes, desired_fronts=desired_fronts)
+    stats.notes_deleted += deleted
+    stats.notes_updated += normalized
+    if deleted or normalized:
+        existing_notes = load_existing_notes(anki_url, spec.deck_name)
+    existing = notes_by_front(existing_notes)
 
     for row in rows:
         desired_fields = note_fields(row)
@@ -293,7 +360,7 @@ def main() -> None:
         print(
             "  "
             f"notes={stats.notes_seen} add={stats.notes_added} update={stats.notes_updated} "
-            f"unchanged={stats.notes_unchanged} media={stats.media_uploaded}/{stats.media_seen} "
+            f"delete={stats.notes_deleted} unchanged={stats.notes_unchanged} media={stats.media_uploaded}/{stats.media_seen} "
             f"missing_media={stats.media_missing}"
         )
         for field in totals.__dataclass_fields__:
@@ -310,7 +377,7 @@ def main() -> None:
     print(
         "\nDone: "
         f"notes={totals.notes_seen} add={totals.notes_added} update={totals.notes_updated} "
-        f"unchanged={totals.notes_unchanged} media={totals.media_uploaded}/{totals.media_seen}"
+        f"delete={totals.notes_deleted} unchanged={totals.notes_unchanged} media={totals.media_uploaded}/{totals.media_seen}"
     )
 
 

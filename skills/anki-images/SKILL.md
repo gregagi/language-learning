@@ -89,7 +89,7 @@ uv run python scripts/generate_anki_image_deck.py \
   --source-csv french/nouns.csv \
   --output-csv french/nouns_images.csv \
   --image-dir french/images \
-  --prompt-output french/nouns_image_prompts.csv \
+  --prompt-output french/images/nouns_image_prompts.csv \
   --overwrite-output
 ```
 

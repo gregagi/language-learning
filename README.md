@@ -90,6 +90,11 @@ uv run python scripts/sync_to_anki.py \
 
 The script creates missing decks, uploads/copies referenced `[sound:...]` and `<img src="...">` files, adds new notes, updates existing notes matched by their `Front` field inside each deck, and triggers Anki sync unless `--no-sync` is passed.
 
+It also cleans up two old manual-import artifacts when run against AnkiConnect:
+
+- deletes accidental literal header notes where the note content is `Front` / `Back`
+- normalizes stale notes whose `Front` had an old trailing parenthetical, like `to want (querer)`, when the current CSV now uses `to want`
+
 ## Anki image workflow
 
 This repo also includes a reusable image-based deck workflow for any language:
@@ -111,6 +116,6 @@ uv run python scripts/generate_anki_image_deck.py --preset spanish-nouns-images 
 The script writes:
 
 - an image-based deck CSV such as `spanish/nouns_images.csv`
-- an editable prompt manifest such as `spanish/nouns_image_prompts.csv`
+- an editable prompt manifest in the image directory, such as `spanish/images/nouns_image_prompts.csv`
 
-Use the prompt manifest as a starting point, then review and tighten prompts for ambiguous concepts before generating images at scale.
+Use the prompt manifest as a starting point, then review and tighten prompts for ambiguous concepts before generating images at scale. Prompt manifests live next to images because they are generation metadata, not import decks.

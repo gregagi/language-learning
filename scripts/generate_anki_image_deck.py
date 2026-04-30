@@ -8,7 +8,7 @@ Examples:
     --source-csv spanish/nouns.csv \
     --output-csv spanish/nouns_images.csv \
     --image-dir spanish/images \
-    --prompt-output spanish/nouns_image_prompts.csv
+    --prompt-output spanish/images/nouns_image_prompts.csv
 """
 
 from __future__ import annotations
