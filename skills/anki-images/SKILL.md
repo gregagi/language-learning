@@ -9,7 +9,7 @@ Use this as a reusable workflow for how the agent should create image-based deck
 
 Important: the script does not generate images by itself. It only prepares the deck CSV and a prompt manifest. The actual images should be created or sourced separately, typically by the agent using an image-generation tool/model or by manually finding suitable images.
 
-Current tested path in this repo: use the agent's `image_generate` tool. In this environment, the example images for this workflow were generated with `google/gemini-3-pro-image-preview`. Treat that as an implementation detail, not a requirement of the workflow: the deck format and prompt guidance should still work with other configured image providers/models.
+Preferred tested path in this repo: use the agent's `image_generate` tool with OpenAI image generation, e.g. `openai/gpt-image-2`, authenticated through OpenClaw's OpenAI Codex OAuth subscription profile. Do not require a direct `OPENAI_API_KEY` for this workflow unless Rasul explicitly asks for API-key auth; the intended default is the same Codex OAuth subscription used by the agents/chats.
 
 ## Preferred pattern
 
@@ -63,7 +63,7 @@ Examples:
 1. Run the script to generate the image deck CSV and prompt manifest.
 2. Review the prompt manifest and adjust rows that are too vague or map to the wrong sense.
 3. Use the agent's image-generation tool or a manual image-sourcing step to create/find images using the manifest prompts and filenames.
-   - Current tested example: `image_generate` routed to `google/gemini-3-pro-image-preview` in this environment.
+   - Preferred tested example: `image_generate` routed to `openai/gpt-image-2` via OpenAI Codex OAuth subscription auth, not a direct OpenAI API key.
 4. Save the final images into `<language>/images/` using the manifest filenames.
 5. Import the CSV into Anki and copy image files into Anki media alongside audio.
 6. Inspect a few sample cards for hidden text, wrong senses, and concept quality before scaling.
@@ -99,5 +99,5 @@ uv run python scripts/generate_anki_image_deck.py \
 - In the CSV, use only the bare filename in the image tag, not the repo path.
 - Presets live in `anki-image-presets.json`.
 - The prompt manifest is intentionally editable; do not treat generated prompts as final truth.
-- The script is scaffolding; the real image creation step happens separately via the agent's image workflow or manual sourcing.
+- The script is scaffolding; the real image creation step happens separately via the agent's image workflow or manual sourcing. Prefer OpenAI image generation through Codex OAuth subscription auth for agent-generated images.
 - Review generated images for hidden text, wrong senses, and overly stylized outputs before scaling.

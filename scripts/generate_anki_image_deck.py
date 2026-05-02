@@ -1,6 +1,11 @@
 #!/usr/bin/env python3
 """Build an image-based Anki deck plus a prompt manifest from an existing CSV deck.
 
+This script does not generate images or manage provider auth. For agent-generated
+images in this repo, prefer OpenAI image generation through OpenClaw's OpenAI
+Codex OAuth subscription auth, e.g. `image_generate` with `openai/gpt-image-2`.
+Do not require a direct OpenAI API key for the default image workflow.
+
 Examples:
   python scripts/generate_anki_image_deck.py --preset spanish-nouns-images
 
