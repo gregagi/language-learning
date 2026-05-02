@@ -24,6 +24,12 @@ Start small, keep decks practical, and optimize for real-world communication.
 - `spanish/useful_phrases.csv`
 - `spanish/nouns_images.csv` - experimental image -> Spanish noun deck
 
+## Root seed lists
+
+The root `nouns.txt`, `verbs.txt`, `adjectives.txt`, and `phrases.txt` files are the reusable base packs for future languages.
+
+When adding new vocabulary or phrases to a language-specific deck, also add the English source item to the matching root `.txt` seed list so the shared library keeps growing.
+
 ## Anki audio workflow
 
 This repo now includes a reusable pronunciation workflow for Anki across languages:
