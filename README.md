@@ -107,6 +107,8 @@ This repo also includes a reusable image-based deck workflow for any language:
 
 Important: the script only scaffolds the deck CSV plus a prompt manifest. The actual image creation step happens separately via an image-generation tool/model or manual sourcing.
 
+Preferred generation path: use OpenAI image generation through OpenClaw's OpenAI Codex OAuth subscription auth, for example `image_generate` with `openai/gpt-image-2`. Do not require or document a direct `OPENAI_API_KEY` for this workflow; the intended auth path is the same Codex OAuth subscription used by the agents/chats.
+
 Spanish nouns example:
 
 ```bash
