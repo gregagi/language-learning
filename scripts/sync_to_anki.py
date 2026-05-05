@@ -184,6 +184,18 @@ def load_existing_notes(anki_url: str, deck_name: str) -> list[dict[str, Any]]:
     return invoke(anki_url, "notesInfo", {"notes": note_ids})
 
 
+def ensure_deck_exists(anki_url: str, deck_name: str) -> None:
+    """Create a deck only when it is missing.
+
+    Calling AnkiConnect's createDeck on every sync is harmless but noisy on
+    newer Anki versions because AnkiConnect internally calls obsolete UI reset
+    APIs. Checking first keeps normal no-op syncs much quieter.
+    """
+    existing_decks = set(invoke(anki_url, "deckNames"))
+    if deck_name not in existing_decks:
+        invoke(anki_url, "createDeck", {"deck": deck_name})
+
+
 def front_value(note: dict[str, Any]) -> str | None:
     return note.get("fields", {}).get("Front", {}).get("value")
 
@@ -294,7 +306,7 @@ def sync_deck(
         stats.notes_added = len(rows)
         return stats
 
-    invoke(anki_url, "createDeck", {"deck": spec.deck_name})
+    ensure_deck_exists(anki_url, spec.deck_name)
     desired_fronts = {note_fields(row)["Front"] for row in rows}
     existing_notes = load_existing_notes(anki_url, spec.deck_name)
     deleted, normalized = cleanup_existing_notes(anki_url=anki_url, notes=existing_notes, desired_fronts=desired_fronts)
