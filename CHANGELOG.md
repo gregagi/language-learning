@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Added `playground` to the shared noun seed list, Spanish noun deck, and Spanish image noun deck.
 - Moved the Spanish image prompt manifest into `spanish/images/` so generation metadata lives with generated images instead of deck CSVs.
 - Hardened `scripts/sync_to_anki.py` to remove accidental `Front`/`Back` header notes and normalize stale note fronts with old trailing parentheticals when syncing current CSV rows.
 - Added three Spanish image noun cards for water, bathroom, and table, including generated flashcard images.

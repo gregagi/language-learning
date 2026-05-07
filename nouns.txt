@@ -6,6 +6,7 @@ beer
 money
 price
 place
+playground
 street
 house
 room
