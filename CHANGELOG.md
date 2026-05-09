@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Added a Spanish image color deck with simple square color cards, plus two color cards in the mixed image noun deck.
 - Added 11 Spanish color adjectives with pronunciation audio to the adjectives deck.
 - Added `playground` to the shared noun seed list, Spanish noun deck, and Spanish image noun deck.
 - Moved the Spanish image prompt manifest into `spanish/images/` so generation metadata lives with generated images instead of deck CSVs.
