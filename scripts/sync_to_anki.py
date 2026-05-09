@@ -38,7 +38,6 @@ DEFAULT_MODEL_NAME = "Basic"
 DEFAULT_DECKS = {
     "spanish": [
         {"csv": "adjectives.csv", "deck": "Spanish Adjectives"},
-        {"csv": "colors_images.csv", "deck": "Spanish Image Colors"},
         {"csv": "nouns_images.csv", "deck": "Spanish Image Nouns"},
         {"csv": "nouns.csv", "deck": "Spanish Nouns"},
         {"csv": "useful_phrases.csv", "deck": "Spanish Phrases"},

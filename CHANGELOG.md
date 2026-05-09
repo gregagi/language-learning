@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Removed the standalone Spanish image colors deck; color cards remain covered by adjectives, with blue/yellow still in the mixed image noun deck.
 - Added 30 Spanish body-part nouns to the translation noun deck and image noun deck, including pronunciation audio and simple no-text image cards.
 - Added Spanish cards for `to break / to break oneself`, `pain`, and `painful`, plus practical break-related phrases, including pronunciation audio.
 - Added a Spanish image color deck with simple square color cards, plus two color cards in the mixed image noun deck.
