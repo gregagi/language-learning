@@ -23,7 +23,6 @@ Start small, keep decks practical, and optimize for real-world communication.
 - `spanish/adjectives.csv`
 - `spanish/useful_phrases.csv`
 - `spanish/nouns_images.csv` - experimental image -> Spanish noun deck
-- `spanish/colors_images.csv` - image -> Spanish color adjective deck
 
 ## Root seed lists
 
@@ -82,7 +81,6 @@ uv run python scripts/sync_to_anki.py --language spanish
 Current Spanish deck mapping:
 
 - `spanish/adjectives.csv` → `Spanish Adjectives`
-- `spanish/colors_images.csv` → `Spanish Image Colors`
 - `spanish/nouns_images.csv` → `Spanish Image Nouns`
 - `spanish/nouns.csv` → `Spanish Nouns`
 - `spanish/useful_phrases.csv` → `Spanish Phrases`
