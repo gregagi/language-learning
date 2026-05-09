@@ -20,3 +20,4 @@ help
 wait
 try
 pet
+break

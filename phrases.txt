@@ -23,3 +23,5 @@ tomorrow
 yesterday
 next week
 have a good day
+I broke a lamp.
+My wife broke her leg.
