@@ -18,3 +18,14 @@ right
 wrong
 ready
 busy
+red
+blue
+yellow
+green
+black
+white
+orange
+purple
+pink
+brown
+gray

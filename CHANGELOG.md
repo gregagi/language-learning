@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Added 11 Spanish color adjectives with pronunciation audio to the adjectives deck.
 - Added `playground` to the shared noun seed list, Spanish noun deck, and Spanish image noun deck.
 - Moved the Spanish image prompt manifest into `spanish/images/` so generation metadata lives with generated images instead of deck CSVs.
 - Hardened `scripts/sync_to_anki.py` to remove accidental `Front`/`Back` header notes and normalize stale note fronts with old trailing parentheticals when syncing current CSV rows.
