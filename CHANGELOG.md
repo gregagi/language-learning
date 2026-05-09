@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Added Spanish cards for `to break / to break oneself`, `pain`, and `painful`, plus practical break-related phrases, including pronunciation audio.
 - Added a Spanish image color deck with simple square color cards, plus two color cards in the mixed image noun deck.
 - Added 11 Spanish color adjectives with pronunciation audio to the adjectives deck.
 - Added `playground` to the shared noun seed list, Spanish noun deck, and Spanish image noun deck.
